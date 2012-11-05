@@ -30,26 +30,9 @@
 @end
 
 @implementation DCRoundSwitch
-@synthesize outlineLayer, toggleLayer, knobLayer, clipLayer, ignoreTap;
-@synthesize on, onText, offText;
-@synthesize onTintColor;
 
 #pragma mark -
 #pragma mark Init & Memory Managment
-
-- (void)dealloc
-{
-	[outlineLayer release];
-	[toggleLayer release];
-	[knobLayer release];
-	[clipLayer release];
-
-	[onTintColor release];
-	[onText release];
-	[offText release];
-
-	[super dealloc];
-}
 
 - (id)init
 {
@@ -129,7 +112,7 @@
 	// this is the knob, and sits on top of the layer stack. note that the knob shadow is NOT drawn here, it is drawn on the
 	// toggleLayer so it doesn't bleed out over the outlineLayer.
 
-	self.toggleLayer = [[[[[self class] toggleLayerClass] alloc] initWithOnString:self.onText offString:self.offText onTintColor:[UIColor colorWithRed:0.000 green:0.478 blue:0.882 alpha:1.0]] autorelease];
+	self.toggleLayer = [[[[self class] toggleLayerClass] alloc] initWithOnString:self.onText offString:self.offText onTintColor:[UIColor colorWithRed:0.000 green:0.478 blue:0.882 alpha:1.0]];
 	self.toggleLayer.drawOnTint = NO;
 	self.toggleLayer.clip = YES;
 	[self.layer addSublayer:self.toggleLayer];
@@ -146,14 +129,14 @@
 	self.toggleLayer.contentsScale = self.outlineLayer.contentsScale = self.knobLayer.contentsScale = [[UIScreen mainScreen] scale];
 
 	// tap gesture for toggling the switch
-	UITapGestureRecognizer *tapGestureRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self 
-																						   action:@selector(tapped:)] autorelease];
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+																						   action:@selector(tapped:)];
 	[tapGestureRecognizer setDelegate:self];
 	[self addGestureRecognizer:tapGestureRecognizer];
 
 	// pan gesture for moving the switch knob manually
-	UIPanGestureRecognizer *panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self
-																				 action:@selector(toggleDragged:)] autorelease];
+	UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
+																				 action:@selector(toggleDragged:)];
 	[panGestureRecognizer setDelegate:self];
 	[self addGestureRecognizer:panGestureRecognizer];
 
@@ -342,7 +325,7 @@
 - (void)setOn:(BOOL)newOn animated:(BOOL)animated ignoreControlEvents:(BOOL)ignoreControlEvents
 {
 	BOOL previousOn = self.on;
-	on = newOn;
+	_on = newOn;
 	self.ignoreTap = YES;
 
 	[CATransaction setAnimationDuration:0.014];
@@ -353,7 +336,7 @@
 	[self positionLayersAndMask];
 
 	// retain all our targets so they don't disappear before the actions get sent at the end of the animation
-	[[self allTargets] makeObjectsPerformSelector:@selector(retain)];
+	//[[self allTargets] makeObjectsPerformSelector:@selector(retain)];
 
 	[CATransaction setCompletionBlock:^{
 		[CATransaction begin];
@@ -396,27 +379,34 @@
 			self.ignoreTap = NO;
 
 			// send the action here so it get's sent at the end of the animations
-			if (previousOn != on && !ignoreControlEvents)
+			if (previousOn != _on && !ignoreControlEvents)
 				[self sendActionsForControlEvents:UIControlEventValueChanged];
 
-			[[self allTargets] makeObjectsPerformSelector:@selector(release)];
+			//[[self allTargets] makeObjectsPerformSelector:@selector(release)];
 		}];
 
 		[CATransaction commit];
 	}];
 }
 
-- (void)setOnTintColor:(UIColor *)anOnTintColor
+- (void)setOnTintColor:(UIColor *)onTintColor
 {
-	if (anOnTintColor != onTintColor)
+	if (![onTintColor isEqual:_onTintColor])
 	{
-		[onTintColor release];
-		onTintColor = [anOnTintColor retain];
-		self.toggleLayer.onTintColor = anOnTintColor;
+		_onTintColor = onTintColor;
+		self.toggleLayer.onTintColor = _onTintColor;
 		[self.toggleLayer setNeedsDisplay];
 	}
 }
 
+- (void)setOffTintColor:(UIColor *)offTintColor {
+    if (![offTintColor isEqual:_offTintColor])
+	{
+		_offTintColor = offTintColor;
+		//self.toggleLayer.onTintColor = _onTintColor;
+		[self.toggleLayer setNeedsDisplay];
+	}
+}
 - (void)layoutSubviews;
 {
 	CGFloat knobRadius = self.bounds.size.height + 2.0;
@@ -443,23 +433,21 @@
 	[self positionLayersAndMask];
 }
 
-- (void)setOnText:(NSString *)newOnText
+- (void)setOnText:(NSString *)onText
 {
-	if (newOnText != onText)
+	if (![onText isEqualToString:_onText])
 	{
-		[onText release];
-		onText = [newOnText copy];
+		_onText = [onText copy];
 		self.toggleLayer.onString = onText;
 		[self.toggleLayer setNeedsDisplay];
 	}
 }
 
-- (void)setOffText:(NSString *)newOffText
+- (void)setOffText:(NSString *)offText
 {
-	if (newOffText != offText)
+	if (![offText isEqualToString:_offText])
 	{
-		[offText release];
-		offText = [newOffText copy];
+		_offText = [offText copy];
 		self.toggleLayer.offString = offText;
 		[self.toggleLayer setNeedsDisplay];
 	}

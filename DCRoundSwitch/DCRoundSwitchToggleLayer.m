@@ -12,19 +12,6 @@
 #import "DCRoundSwitchToggleLayer.h"
 
 @implementation DCRoundSwitchToggleLayer
-@synthesize onString, offString, onTintColor;
-@synthesize drawOnTint;
-@synthesize clip;
-@synthesize labelFont;
-
-- (void)dealloc
-{
-	[onString release];
-	[offString release];
-	[onTintColor release];
-
-	[super dealloc];
-}
 
 - (id)initWithOnString:(NSString *)anOnString offString:(NSString *)anOffString onTintColor:(UIColor *)anOnTintColor
 {
