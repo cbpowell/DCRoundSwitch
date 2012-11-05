@@ -13,13 +13,14 @@
 
 @implementation DCRoundSwitchToggleLayer
 
-- (id)initWithOnString:(NSString *)anOnString offString:(NSString *)anOffString onTintColor:(UIColor *)anOnTintColor
+- (id)initWithOnString:(NSString *)anOnString offString:(NSString *)anOffString onTintColor:(UIColor *)anOnTintColor offTintColor:(UIColor *)anOffTintColor
 {
 	if ((self = [super init]))
 	{
 		self.onString = anOnString;
 		self.offString = anOffString;
 		self.onTintColor = anOnTintColor;
+        self.offTintColor = anOffTintColor;
 	}
 
 	return self;
@@ -51,7 +52,7 @@
 	}
 
 	// off tint color (white)
-	CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:0.963 alpha:1.0].CGColor);
+	CGContextSetFillColorWithColor(context, self.offTintColor.CGColor);
 	CGContextFillRect(context, CGRectMake(knobCenter, 0, self.bounds.size.width - knobCenter, self.bounds.size.height));
 
 	// knob shadow

@@ -22,6 +22,6 @@
 @property (nonatomic) BOOL drawOnTint;
 @property (nonatomic) BOOL clip;
 
-- (id)initWithOnString:(NSString *)anOnString offString:(NSString *)anOffString onTintColor:(UIColor *)anOnTintColor;
+- (id)initWithOnString:(NSString *)anOnString offString:(NSString *)anOffString onTintColor:(UIColor *)anOnTintColor offTintColor:(UIColor *)anOffTintColor;
 
 @end
