@@ -18,11 +18,19 @@
 
 @interface DCRoundSwitch : UIControl
 
-@property (nonatomic, strong) UIColor *onTintColor;		// default: blue (matches normal UISwitch)
-@property (nonatomic, strong) UIColor *offTintColor;    // default: grey (matches normal UISwitch)
-@property (nonatomic, getter=isOn) BOOL on;				// default: NO
-@property (nonatomic, copy) NSString *onText;			// default: 'ON' - automatically localized
-@property (nonatomic, copy) NSString *offText;			// default: 'OFF' - automatically localized
+@property (nonatomic, strong) UIColor *onTintColor;         // default: blue (matches normal UISwitch)
+@property (nonatomic, strong) UIColor *offTintColor;        // default: grey (matches normal UISwitch)
+@property (nonatomic, getter=isOn) BOOL on;                 // default: NO
+@property (nonatomic, copy) NSString *onText;               // default: 'ON' - automatically localized
+@property (nonatomic, copy) NSString *offText;              // default: 'OFF' - automatically localized
+
+// Extra
+@property (nonatomic) BOOL drawGloss;                       // default: YES
+@property (nonatomic) BOOL drawInnerShadow;                 // default: YES
+@property (nonatomic, strong) UIColor *onTextColor;         // default: white (matches normal UISwtich)
+@property (nonatomic, strong) UIColor *onTextShadowColor;   // default: grey (matches normal UISwitch)
+@property (nonatomic, strong) UIColor *offTextColor;        // default: grey (matches normal UISwtich)
+@property (nonatomic, strong) UIColor *offTextShadowColor;  // default: white (matches normal UISwitch)
 
 + (Class)knobLayerClass;
 + (Class)outlineLayerClass;

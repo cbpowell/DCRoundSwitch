@@ -13,4 +13,7 @@
 
 @interface DCRoundSwitchOutlineLayer : CALayer
 
+@property (nonatomic) BOOL drawGloss;
+@property (nonatomic) BOOL drawInnerShadow;
+
 @end

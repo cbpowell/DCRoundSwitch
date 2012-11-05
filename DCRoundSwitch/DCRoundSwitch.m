@@ -117,8 +117,15 @@
 	self.toggleLayer.clip = YES;
 	[self.layer addSublayer:self.toggleLayer];
 	[self.toggleLayer setNeedsDisplay];
-
+    self.onTextColor = self.toggleLayer.onTextColor;
+    self.onTextShadowColor = self.toggleLayer.onTextShadowColor;
+    self.offTextColor = self.toggleLayer.offTextColor;
+    self.offTextShadowColor = self.toggleLayer.offTextShadowColor;
+    
+    self.drawGloss = YES;
 	self.outlineLayer = [[[self class] outlineLayerClass] layer];
+    self.outlineLayer.drawGloss = YES;
+    self.outlineLayer.drawInnerShadow = YES;
 	[self.toggleLayer addSublayer:self.outlineLayer];
 	[self.outlineLayer setNeedsDisplay];
 
@@ -213,6 +220,32 @@
 								 -1,
 								 self.knobLayer.frame.size.width,
 								 self.knobLayer.frame.size.height);
+}
+
+- (void)layoutSubviews;
+{
+	CGFloat knobRadius = self.bounds.size.height + 2.0;
+	self.knobLayer.frame = CGRectMake(0, 0, knobRadius, knobRadius);
+	CGSize toggleSize = CGSizeMake(self.bounds.size.width * 2 - (knobRadius - 4), self.bounds.size.height);
+	CGFloat minToggleX = -toggleSize.width / 2.0 + knobRadius / 2.0 - 1;
+	CGFloat maxToggleX = -1;
+    
+	if (self.on)
+	{
+		self.toggleLayer.frame = CGRectMake(maxToggleX,
+                                            self.toggleLayer.frame.origin.y,
+                                            toggleSize.width,
+                                            toggleSize.height);
+	}
+	else
+	{
+		self.toggleLayer.frame = CGRectMake(minToggleX,
+                                            self.toggleLayer.frame.origin.y,
+                                            toggleSize.width,
+                                            toggleSize.height);
+	}
+    
+	[self positionLayersAndMask];
 }
 
 #pragma mark -
@@ -407,31 +440,6 @@
 		[self.toggleLayer setNeedsDisplay];
 	}
 }
-- (void)layoutSubviews;
-{
-	CGFloat knobRadius = self.bounds.size.height + 2.0;
-	self.knobLayer.frame = CGRectMake(0, 0, knobRadius, knobRadius);
-	CGSize toggleSize = CGSizeMake(self.bounds.size.width * 2 - (knobRadius - 4), self.bounds.size.height);
-	CGFloat minToggleX = -toggleSize.width / 2.0 + knobRadius / 2.0 - 1;
-	CGFloat maxToggleX = -1;
-
-	if (self.on)
-	{
-		self.toggleLayer.frame = CGRectMake(maxToggleX,
-									   self.toggleLayer.frame.origin.y,
-									   toggleSize.width,
-									   toggleSize.height);
-	}
-	else
-	{
-		self.toggleLayer.frame = CGRectMake(minToggleX,
-									   self.toggleLayer.frame.origin.y,
-									   toggleSize.width,
-									   toggleSize.height);
-	}
-
-	[self positionLayersAndMask];
-}
 
 - (void)setOnText:(NSString *)onText
 {
@@ -453,4 +461,45 @@
 	}
 }
 
+- (void)setDrawGloss:(BOOL)drawGloss {
+    if (_drawGloss != drawGloss) {
+        _drawGloss = drawGloss;
+        self.outlineLayer.drawGloss = drawGloss;
+    }
+}
+
+- (void)setDrawInnerShadow:(BOOL)drawInnerShadow {
+    if (_drawInnerShadow != drawInnerShadow) {
+        _drawInnerShadow = drawInnerShadow;
+        self.outlineLayer.drawGloss = drawInnerShadow;
+    }
+}
+
+- (void)setOnTextColor:(UIColor *)onTextColor {
+    if (![_onTextColor isEqual:onTextColor]) {
+        _onTextColor = onTextColor;
+        self.toggleLayer.onTextColor = onTextColor;
+    }
+}
+
+- (void)setOnTextShadowColor:(UIColor *)onTextShadowColor {
+    if (![_onTextShadowColor isEqual:onTextShadowColor]) {
+        _onTextShadowColor = onTextShadowColor;
+        self.toggleLayer.onTextShadowColor = onTextShadowColor;
+    }
+}
+
+- (void)setOffTextColor:(UIColor *)offTextColor {
+    if (![_offTextColor isEqual:offTextColor]) {
+        _offTextColor = offTextColor;
+        self.toggleLayer.offTextColor = offTextColor;
+    }
+}
+
+- (void)setOffTextShadowColor:(UIColor *)offTextShadowColor {
+    if (![_offTextShadowColor isEqual:offTextShadowColor]) {
+        _offTextShadowColor = offTextShadowColor;
+        self.toggleLayer.offTextShadowColor = offTextShadowColor;
+    }
+}
 @end

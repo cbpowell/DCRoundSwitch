@@ -17,7 +17,11 @@
 @property (nonatomic, strong) UIColor *onTintColor;
 @property (nonatomic, strong) UIColor *offTintColor;
 @property (nonatomic, strong) NSString *onString;
+@property (nonatomic, strong) UIColor *onTextColor;
+@property (nonatomic, strong) UIColor *onTextShadowColor;
 @property (nonatomic, strong) NSString *offString;
+@property (nonatomic, strong) UIColor *offTextColor;
+@property (nonatomic, strong) UIColor *offTextShadowColor;
 @property (nonatomic, readonly) UIFont *labelFont;
 @property (nonatomic) BOOL drawOnTint;
 @property (nonatomic) BOOL clip;
