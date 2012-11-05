@@ -403,7 +403,7 @@
     if (![offTintColor isEqual:_offTintColor])
 	{
 		_offTintColor = offTintColor;
-		//self.toggleLayer.onTintColor = _onTintColor;
+		self.toggleLayer.offTintColor = _offTintColor;
 		[self.toggleLayer setNeedsDisplay];
 	}
 }
